@@ -2,10 +2,13 @@ const mongoose=require("mongoose");
 
 
 const User = mongoose.model('users',{
-    name: String,
+    userName: String,
     password:String,
-    birthDate:Date,
-    
+    birthDate:{
+        type:Date,
+        default:Date.now()
+    },
+
 });
 
 
