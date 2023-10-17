@@ -24,7 +24,7 @@ module.exports = {
             return res.status(401).json({ msg: 'Invalid username or password' });
         }
 
-        const token = jwt.sign({ username }, secretKey, { expiresIn: '1h' });
+        const token = jwt.sign({ user }, secretKey, { expiresIn: '1h' });
         res.cookie('token', token, { httpOnly: true });
         res.json({ msg: 'Login successful' });
     },
