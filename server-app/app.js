@@ -3,13 +3,14 @@ var express = require('express');
 var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
-
+var cors = require('cors')
 
 
 const authRouter=require('./routes/auth')
 const postRouter=require('./routes/post')
 var app = express();
 
+app.use(cors({ origin: 'http://localhost:5173',credentials:true}))
 app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

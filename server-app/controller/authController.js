@@ -6,6 +6,7 @@ const secretKey="batata"
 module.exports = {
 
     login:async(req,res)=>{
+        // await new Promise(resolve => setTimeout(resolve, 3000));
         const { error } = schema.validate(req.body);
         if (error) {
             return res.status(400).json({ error: error.details[0].message });
@@ -25,7 +26,7 @@ module.exports = {
         }
 
         const token = jwt.sign({ user }, secretKey, { expiresIn: '1h' });
-        res.cookie('token', token, { httpOnly: true });
+        res.cookie('token', token, { httpOnly: true ,secure: true });
         res.json({ msg: 'Login successful' });
     },
 
