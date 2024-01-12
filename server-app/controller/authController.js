@@ -1,53 +1,59 @@
-const User=require('../models/User')
-const bcrypt=require("bcrypt")
-const jwt = require('jsonwebtoken');
-const {schema}=require("../validationSchema/authSchema")
-const secretKey="batata"
+const { schema } = require("../validationSchema/authSchema");
+const authService = require('../services/authService');
+
 module.exports = {
+    async login(req, res) {
+        try {
+            const { error } = schema.validate(req.body);
+            
+            if (error) return res.status(400).json({ error: error.details[0].message });
 
-    login:async(req,res)=>{
-        // await new Promise(resolve => setTimeout(resolve, 3000));
-        const { error } = schema.validate(req.body);
-        if (error) {
-            return res.status(400).json({ error: error.details[0].message });
+            const { username, password } = req.body;
+            
+            const {token,refreshToken} = await authService.loginUser(username, password);
+
+            res.cookie('refreshToken', refreshToken, { httpOnly: true, secure: true });
+
+            res.json({ msg: 'Login successful',accessToken: token});
+        
+        } catch (error) {
+            res.status(401).json({ msg: error.message });
         }
-        const { username, password } = req.body;
-
-        const [user] = await User.find({userName:username});
-
-        if (!user) {
-            return res.status(401).json({ msg: 'Invalid username or password' });
-        }
-
-        const isPasswordValid = await bcrypt.compare(password, user.password);
-
-        if (!isPasswordValid) {
-            return res.status(401).json({ msg: 'Invalid username or password' });
-        }
-
-        const token = jwt.sign({ user }, secretKey, { expiresIn: '1h' });
-        res.cookie('token', token, { httpOnly: true ,secure: true });
-        res.json({ msg: 'Login successful' });
     },
 
-    register:async(req,res)=>{
-        const { error } = schema.validate(req.body);
-        if (error) {
-            return res.status(400).json({ error: error.details[0].message });
-        }
+    async register(req, res) {
+        try {            
+            
+            const { error } = schema.validate(req.body);
 
-        const { username, password } = req.body;
-        
-        const userExist= await User.find({userName:username})
-        
-        if(userExist){
-            return res.status(401).json({msg:"this username is exist"});
-        }
+            if (error) {
+                return res.status(400).json({ error: error.details[0].message });
+            }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
+            const { username, password } = req.body;
+
+            authService.registerUser(username, password );
+
+            res.status(201).send();
         
-        await User.create({userName:username,password:hashedPassword});
+        } catch (error) {
+            res.status(400).json({ msg: error.message });
+        }
+    },
+    
+    async refresh(req, res){
         
-        res.status(201).json({msg:"done created user"});
+        const refreshToken = req.cookies.refreshToken;
+
+        if (!refreshToken) return res.sendStatus(401);
+        
+        const newAccessToken=await authService.checkAndCreateRefreshToken(refreshToken);
+        
+        if(!newAccessToken){
+            return res.sendStatus(403);
+        }
+        
+        res.json({accessToken:newAccessToken})
     }
+
 };

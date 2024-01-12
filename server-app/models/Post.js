@@ -1,14 +1,26 @@
 const mongoose = require('mongoose');
-const commentSchema=require('./CommentSchema')
+
+const commentSchema = require('./CommentSchema')
+
+const MetaPostSchema = require("./MetaPost")
+
 const postSchema = new mongoose.Schema({
-    title: {
-    type: String,
-    required: true,
+    metaData: {
+        type: MetaPostSchema, 
+        default: {
+            commentsCount: 0,
+            avgRating: 0,
+            totalRatingSum :0
+        }
     },
-    imageUrl:String,
+    title: {
+        type: String,
+        required: true,
+    },
+    imageUrl: String,
     content: {
-    type: String,
-    required: true,
+        type: String,
+        required: true,
     },
     comments: [commentSchema],
     user: {
