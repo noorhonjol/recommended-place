@@ -80,9 +80,9 @@ function NavBar() {
               </>
               :
               <>
-                <Text>
+                <Link as={RouterNavLink} to="profile">
                   {userInfo?.userName}
-                </Text>
+                </Link>
                 <Button colorScheme="blue" onClick={handleLogout} >logout</Button>
               </>
 

@@ -13,6 +13,7 @@ import {
 import RegisterPage from "./RegisterPage";
 import { AuthProvider } from "./AuthContext";
 import AddPostPage from "./AddPostPage";
+import ProfilePage from "./ProfilePage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
@@ -24,7 +25,9 @@ const router = createBrowserRouter(
       <Route path="post/:id" element={<DetailsPage/>} /> 
       <Route path="login" element={<LoginPage/>} />
       <Route path="register" element={<RegisterPage/>} />
+      <Route path="profile" element={<ProfilePage/>}/>
       <Route path="*" element={<div>not found</div>} />
+      
     </Route>
   )
   );
