@@ -33,8 +33,7 @@ module.exports={
             const { text, rating } = req.body;
             const { user } = req.user;
             const { id:postId } = req.params;
-
-            const message = await PostService.addCommentToPost(postId, text, rating, user._id);
+            const message = await PostService.addCommentToPost(postId, text, rating, user.user._id);
             res.status(200).json({ message });
         } catch (error) {
             res.status(500).json({ error: error.message });

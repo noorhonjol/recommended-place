@@ -54,6 +54,10 @@ module.exports = {
         }
         
         res.json({accessToken:newAccessToken})
+    },
+    async logout(req,res){
+        res.cookie('refreshToken', '', { httpOnly: true, secure: true });
+        res.status(201).send();
     }
 
 };

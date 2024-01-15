@@ -11,16 +11,17 @@ import AddingComment from "./Components/DetailsPageComponent/AddingComment";
 
 
 export default function DetailsPage() {
-
+    
     const{id}=useParams();
-    const {data,isLoading,error}=useQuery("postData", () =>(
-        axios.get(`http://localhost:3000/post/${id}`).then((res) => res.data)
+    const {data,isLoading,error,refetch}=useQuery("postData", () =>(
+        axios.get(`http://localhost:3000/post/${id}`)
     ))
     if (isLoading) return <SpinnerIcon/>;
+    
 
     if (error) return "An error has occurred: " + error.message;
 
-    const { title, imageUrl, content, metaData, comments } = data;
+    const { title, imageUrl, content, metaData, comments } = data.data;
 
     return (
         <Flex direction="column" alignItems="center" p={5}>
@@ -34,7 +35,7 @@ export default function DetailsPage() {
                 <StarRating rating={metaData.avgRating} />
             </VStack>
             
-            <AddingComment />
+            <AddingComment refetch={refetch}/>
             <Comments comments={comments} />
             
         </Flex>

@@ -10,7 +10,7 @@ import {
   Stack,
   Text,
 } from '@chakra-ui/react';
-
+import useFetchData from '../hooks/useFetchData'
 import { HamburgerIcon, CloseIcon } from '@chakra-ui/icons';
 import { NavLink as RouterNavLink } from 'react-router-dom';
 import { useContext } from 'react';
@@ -37,6 +37,14 @@ function NavBar() {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const {userInfo}=useContext(AuthContext);
+  
+  // const navigate=useNavigate()
+
+  const api=useFetchData();
+  const handleLogout=async()=>{
+    await api.get('auth/logout');
+    location.reload()
+  }
 
   return (
     <Box px={4}>
@@ -75,7 +83,7 @@ function NavBar() {
                 <Text>
                   {userInfo?.userName}
                 </Text>
-                <Button colorScheme="blue" >logout</Button>
+                <Button colorScheme="blue" onClick={handleLogout} >logout</Button>
               </>
 
 

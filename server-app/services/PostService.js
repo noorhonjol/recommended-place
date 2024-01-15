@@ -23,12 +23,11 @@ class PostService {
     static async addCommentToPost(postId, text, rating, userId) {
         try {
             const searchPost = await Post.findById(postId);
-
             if (!searchPost) {
                 throw new Error("Post not found.");
             }
             const newComment = {
-                user: user._id,
+                user: userId,
                 text: text,
                 rating: rating
             };
