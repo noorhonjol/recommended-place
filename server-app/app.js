@@ -11,12 +11,24 @@ const postRouter=require('./routes/post');
 const app = express();
 
 app.use(helmet())
-app.use(cors({ origin: 'http://localhost:5173', credentials: true}))
+app.use(cors({ 
+  origin: 'http://localhost:5173', credentials: true,
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200
+}))
+
+app.use((req, res, next) => {
+  res.header('Cross-Origin-Resource-Policy', 'cross-origin');
+  next();
+});
+
 app.use(logger('dev'));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, 'uploads')));
 
 
 app.use('/auth', authRouter);

@@ -12,7 +12,7 @@ export default function FormContainer({ initialValues, validationSchema, onSubmi
             {({status})=>(
 
 
-                <Form>
+                <Form encType='multipart/form-data'>
                     {children}
                     <Text >
                         {status ? status : ''}

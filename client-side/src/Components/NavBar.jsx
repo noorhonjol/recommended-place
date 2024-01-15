@@ -57,6 +57,9 @@ function NavBar() {
             <NavLink to='/' >Home</NavLink>
             <NavLink to='about'>About</NavLink>
             <NavLink to='contact'>Contact</NavLink>
+            {
+              userInfo&&<NavLink to='post'>Add Post</NavLink>
+            }
           </HStack>
 
           <HStack spacing={4}>
@@ -89,6 +92,7 @@ function NavBar() {
             <NavLink to='/' >Home</NavLink>
             <NavLink to='about'>About</NavLink>
             <NavLink to='contact'>Contact</NavLink>
+            
           </Stack>
         </Box>
       ) : null}

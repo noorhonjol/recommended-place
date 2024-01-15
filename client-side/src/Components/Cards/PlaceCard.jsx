@@ -42,6 +42,7 @@ export default function PlaceCard({ data }) {
                 h='200px'
                 objectFit='cover'
                 src={imageUrl}
+                // src={"localhost:3000/a.png"}
                 alt={title}
             />
             <CardFooter

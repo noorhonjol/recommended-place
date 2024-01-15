@@ -3,16 +3,21 @@ const PostService = require('../services/PostService');
 module.exports={
     createPost : async (req, res)=> {
         try {
+            const{filename}=req.file
             const { user } = req.user;
-            const { title, content, imageUrl } = req.body;
-
-            if (!title || !content || !imageUrl) {
+            const { title, content } = req.body;
+            
+            if (!title || !content || !filename) {
                 return res.status(400).json({ error: "Title, content, and imageUrl are required." });
             }
-            
-            const newPost = await PostService.createPost(title, content, imageUrl, user._id);
+            const domain = req.protocol + '://' + req.get('host'); 
 
+            const fullPath = domain + '/' + filename; 
+
+            const newPost = await PostService.createPost(title, content, fullPath, user.user._id);
+            
             res.status(201).json({ message: "Post created successfully", post: newPost });
+    
         } catch (error) {
             console.error("Error creating a post:", error);
             res.status(500).json({ error: error.message });

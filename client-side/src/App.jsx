@@ -12,12 +12,14 @@ import {
 } from "react-router-dom";
 import RegisterPage from "./RegisterPage";
 import { AuthProvider } from "./AuthContext";
+import AddPostPage from "./AddPostPage";
 
 const router = createBrowserRouter(
   createRoutesFromElements(
     <Route path="/" element={<MainLayout />} >
       <Route index element={<HomePage />} />
       <Route path="about" element={<div>about</div>} />
+      <Route path="post" element={<AddPostPage/>} />
       <Route path="contact" element={<div>contact</div>} />
       <Route path="post/:id" element={<DetailsPage/>} /> 
       <Route path="login" element={<LoginPage/>} />
